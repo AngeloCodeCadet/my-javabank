@@ -17,10 +17,10 @@ public class BankTest {
             return false;
         }
 
-        Customer c1 = new Customer();
-        Customer c2 = new Customer();
-        bank.addCustomer(c1);
-        bank.addCustomer(c2);
+        Customer c1 = new Customer(0);
+        Customer c2 = new Customer(0);
+        bank.addCustomer(0,c1);
+        bank.addCustomer(0,c2);
 
         int a1 = c1.openAccount(AccountType.CHECKING);
         int a2 = c1.openAccount(AccountType.SAVINGS);
