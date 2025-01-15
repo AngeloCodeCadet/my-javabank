@@ -26,7 +26,7 @@ public class Customer {
 
     }
 
-    public int getId (){
+    public int getId() {
         return id;
     }
 
@@ -70,10 +70,11 @@ public class Customer {
             System.out.println("Account number " + account.getId() + " Balance: " + account.getBalance());
             balance += account.getBalance();
         }
-        System.out.println("Total balance: "+ balance);
+        System.out.println("Total balance: " + balance);
         return balance;
     }
-    public Map <Integer,Account> getAccounts (){
+
+    public Map<Integer, Account> getAccounts() {
         return accounts;
     }
 }

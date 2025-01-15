@@ -14,9 +14,10 @@ import java.sql.SQLOutput;
 public class MenuPrompt {
     private Customer customer;
     private Bank bank;
+    private Prompt prompt;
 
     public MenuPrompt(Bank bank) {
-
+        prompt = new Prompt(System.in, System.out);
         this.bank = bank;
     }
 
@@ -30,7 +31,6 @@ public class MenuPrompt {
 
         System.out.println("===== Welcome to Java Bank =====\n");
 
-        Prompt prompt = new Prompt(System.in, System.out);
 
         IntegerInputScanner question = new IntegerInputScanner();
         question.setMessage("Please insert your customer number: \n");
@@ -51,19 +51,11 @@ public class MenuPrompt {
                         customer.getBalance();
                         break;
                     case 2:
-
                         if (customer.getAccounts().isEmpty()) {
                             System.out.println(" Please open an account first ");
                             break;
                         }
-                        IntegerInputScanner accountNumer = new IntegerInputScanner();
-                        question.setMessage("Please insert your account number: \n");
-                        int answerAccount = prompt.getUserInput(question);
-                        IntegerInputScanner amount = new IntegerInputScanner();
-                        question.setMessage("Please insert the amount: \n");
-                        int answerAmount = prompt.getUserInput(question);
-                        AccountManager accountManager = bank.getAccountManager();
-                        accountManager.deposit(answerAccount, answerAmount);
+                        makeDeposit();
                         break;
                     case 4:
                         customer.openAccount(AccountType.CHECKING);
@@ -72,13 +64,23 @@ public class MenuPrompt {
                     case 5:
                         System.exit(0);
 
-                        
 
                 }
 
 
             }
         }
+    }
+
+    private void makeDeposit(){
+        IntegerInputScanner accountNumer = new IntegerInputScanner();
+        accountNumer.setMessage("Please insert your account number: \n");
+        int answerAccount = prompt.getUserInput(accountNumer);
+        IntegerInputScanner amount = new IntegerInputScanner();
+        amount.setMessage("Please insert the amount: \n");
+        int answerAmount = prompt.getUserInput(amount);
+        AccountManager accountManager = bank.getAccountManager();
+        accountManager.deposit(answerAccount, answerAmount);
     }
 }
 
