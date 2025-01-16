@@ -3,9 +3,9 @@ package io.codeforall.bootcamp.javabank;
 import io.codeforall.bootcamp.javabank.controller.*;
 import io.codeforall.bootcamp.javabank.controller.transaction.DepositController;
 import io.codeforall.bootcamp.javabank.controller.transaction.WithdrawalController;
-import io.codeforall.bootcamp.javabank.managers.AccountManager;
-import io.codeforall.bootcamp.javabank.model.Bank;
 import io.codeforall.bootcamp.javabank.model.Customer;
+import io.codeforall.bootcamp.javabank.service.AuthServiceImp;
+import io.codeforall.bootcamp.javabank.service.CustomerServiceImp;
 import io.codeforall.bootcamp.javabank.view.*;
 import org.academiadecodigo.bootcamp.Prompt;
 
@@ -22,20 +22,29 @@ public class Bootstrap {
      *
      * @return the bank
      */
-    public Bank generateTestData() {
+    public CustomerServiceImp generateTestData() {
 
-        Bank bank = new Bank();
-        AccountManager accountManager = new AccountManager();
-        bank.setAccountManager(accountManager);
+
+        CustomerServiceImp customerServiceImp = new CustomerServiceImp();
+        AuthServiceImp authServiceImp = new AuthServiceImp();
+
+
+       // bank.setAccountManager(accountManager);
+
+
 
         Customer c1 = new Customer(1, "Rui");
         Customer c2 = new Customer(2, "Sergio");
         Customer c3 = new Customer(3, "Bruno");
-        bank.addCustomer(c1);
-        bank.addCustomer(c2);
-        bank.addCustomer(c3);
 
-        return bank;
+        customerServiceImp.add(c1);
+        customerServiceImp.add(c2);
+        customerServiceImp.add(c3);
+
+
+
+
+        return customerServiceImp;
     }
 
     /**
@@ -44,7 +53,7 @@ public class Bootstrap {
      * @param bank the bank to wire
      * @return the login controller
      */
-    public LoginController wireObjects(Bank bank) {
+    public LoginController wireObjects(CustomerServiceImp customerServiceImp) {
 
         // attach all input to standard i/o
         Prompt prompt = new Prompt(System.in, System.out);

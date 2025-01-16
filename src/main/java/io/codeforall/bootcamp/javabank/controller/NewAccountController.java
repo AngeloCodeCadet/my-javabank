@@ -1,7 +1,5 @@
 package io.codeforall.bootcamp.javabank.controller;
 
-import io.codeforall.bootcamp.javabank.managers.AccountManager;
-import io.codeforall.bootcamp.javabank.model.Bank;
 import io.codeforall.bootcamp.javabank.model.account.Account;
 import io.codeforall.bootcamp.javabank.model.account.AccountType;
 import io.codeforall.bootcamp.javabank.view.NewAccountView;

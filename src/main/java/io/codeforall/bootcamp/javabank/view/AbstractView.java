@@ -1,6 +1,5 @@
 package io.codeforall.bootcamp.javabank.view;
 
-import io.codeforall.bootcamp.javabank.model.Bank;
 import org.academiadecodigo.bootcamp.Prompt;
 
 /**

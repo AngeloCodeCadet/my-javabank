@@ -1,6 +1,6 @@
 package io.codeforall.bootcamp.javabank.controller;
 
-import io.codeforall.bootcamp.javabank.model.Bank;
+import io.codeforall.bootcamp.javabank.service.CustomerServiceImp;
 import io.codeforall.bootcamp.javabank.view.LoginView;
 
 /**
@@ -10,7 +10,7 @@ public class LoginController extends AbstractController {
 
     private Controller nextController;
 
-    private Bank bank;
+    private CustomerServiceImp customerServiceImp;
 
     /**
      * Sets the next controller
@@ -26,8 +26,8 @@ public class LoginController extends AbstractController {
      *
      * @param bank the bank to be set
      */
-    public void setBank(Bank bank) {
-        this.bank = bank;
+    public void setBank(CustomerServiceImp customerServiceImp) {
+        this.customerServiceImp = customerServiceImp;
     }
 
     /**

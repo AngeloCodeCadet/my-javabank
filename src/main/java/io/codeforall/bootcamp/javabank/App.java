@@ -1,7 +1,6 @@
 package io.codeforall.bootcamp.javabank;
 
 import io.codeforall.bootcamp.javabank.controller.LoginController;
-import io.codeforall.bootcamp.javabank.model.Bank;
 
 public class App {
 

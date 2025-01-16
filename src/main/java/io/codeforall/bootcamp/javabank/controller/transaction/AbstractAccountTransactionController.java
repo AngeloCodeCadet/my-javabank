@@ -1,7 +1,6 @@
 package io.codeforall.bootcamp.javabank.controller.transaction;
 
 import io.codeforall.bootcamp.javabank.controller.AbstractController;
-import io.codeforall.bootcamp.javabank.model.Bank;
 
 /**
  * A generic account transaction controller to be used as a base for concrete transaction controller implementations
