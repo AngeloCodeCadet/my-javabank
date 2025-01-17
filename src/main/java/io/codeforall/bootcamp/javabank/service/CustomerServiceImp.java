@@ -35,11 +35,9 @@ public class CustomerServiceImp implements CustomerService{
     public double getBalance(int customerId) {
         double balance = 0;
 
-        for (Customer customer : customers.values()) {
-            balance += customer.getBalance();
-        }
+       return customers.get(customerId).getBalance();
 
-        return balance;
+
     }
 
     @Override

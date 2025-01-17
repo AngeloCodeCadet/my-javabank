@@ -1,5 +1,7 @@
 package io.codeforall.bootcamp.javabank.view;
 
+import io.codeforall.bootcamp.javabank.service.AuthServiceImp;
+import io.codeforall.bootcamp.javabank.service.CustomerServiceImp;
 import org.academiadecodigo.bootcamp.Prompt;
 
 /**
@@ -9,7 +11,9 @@ import org.academiadecodigo.bootcamp.Prompt;
 public abstract class AbstractView implements View {
 
     protected Prompt prompt;
-    protected Bank bank;
+
+    protected CustomerServiceImp customerServiceImp;
+    protected AuthServiceImp authServiceImp;
 
     /**
      * Sets the prompt used for the UI
@@ -20,12 +24,13 @@ public abstract class AbstractView implements View {
         this.prompt = prompt;
     }
 
-    /**
-     * Sets the bank
-     *
-     * @param bank the bank to set
-     */
-    public void setBank(Bank bank) {
-        this.bank = bank;
+
+
+    public void setCustomerServiceImp(CustomerServiceImp customerServiceImp) {
+        this.customerServiceImp = customerServiceImp;
+    }
+
+    public void setAuthServiceImp(AuthServiceImp authServiceImp) {
+        this.authServiceImp = authServiceImp;
     }
 }
