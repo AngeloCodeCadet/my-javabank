@@ -2,6 +2,8 @@ package io.codeforall.bootcamp.javabank.model;
 
 import io.codeforall.bootcamp.javabank.model.account.Account;
 
+import java.sql.Array;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,25 +12,95 @@ import java.util.List;
  */
 public class Customer extends AbstractModel {
 
-    private String name;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private int phone;
+    private int version;
+    private Date creationTime;
+    private Date updateTime;
+
+    public Customer(String email, String firstName, String lastName, int phone, int version, Date creationTime, Date updateTime) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.version = version;
+        this.creationTime = creationTime;
+        this.updateTime = updateTime;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public Date getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+
     private List<Account> accounts = new ArrayList<>();
+
 
     /**
      * Gets the name of the customer
      *
      * @return the customer name
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
      * Sets the name of the customer
      *
-     * @param name the name to set
+     * @param firstName the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
@@ -56,6 +128,20 @@ public class Customer extends AbstractModel {
      */
     public void removeAccount(Account account) {
         accounts.remove(account);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone=" + phone +
+                ", version=" + version +
+                ", creationTime=" + creationTime +
+                ", updateTime=" + updateTime +
+                ", accounts=" + accounts +
+                '}';
     }
 }
 

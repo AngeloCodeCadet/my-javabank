@@ -1,15 +1,13 @@
 package io.codeforall.bootcamp.javabank;
 
 import io.codeforall.bootcamp.javabank.controller.*;
+import io.codeforall.bootcamp.javabank.services.*;
 import io.codeforall.bootcamp.javabank.view.*;
 import org.academiadecodigo.bootcamp.Prompt;
 import io.codeforall.bootcamp.javabank.controller.transaction.DepositController;
 import io.codeforall.bootcamp.javabank.controller.transaction.WithdrawalController;
 import io.codeforall.bootcamp.javabank.factories.AccountFactory;
 import io.codeforall.bootcamp.javabank.model.Customer;
-import io.codeforall.bootcamp.javabank.services.AccountServiceImpl;
-import io.codeforall.bootcamp.javabank.services.AuthServiceImpl;
-import io.codeforall.bootcamp.javabank.services.CustomerServiceImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +20,7 @@ public class Bootstrap {
     private AuthServiceImpl authService;
     private CustomerServiceImpl customerService;
     private AccountServiceImpl accountService;
+    private ConnectionManager connectionManager;
 
     /**
      * Sets the authentication service
@@ -53,18 +52,18 @@ public class Bootstrap {
     /**
      * Creates a {@code CustomerService} and populates it with data
      */
-    public void loadCustomers() {
-
-        Customer c1 = new Customer();
-        Customer c2 = new Customer();
-        Customer c3 = new Customer();
-        c1.setName("Rui");
-        c2.setName("Sergio");
-        c3.setName("Bruno");
-        customerService.add(c1);
-        customerService.add(c2);
-        customerService.add(c3);
-    }
+//    public void loadCustomers() {
+//
+//        Customer c1 = new Customer();
+//        Customer c2 = new Customer();
+//        Customer c3 = new Customer();
+//        c1.setName("Rui");
+//        c2.setName("Sergio");
+//        c3.setName("Bruno");
+//        customerService.add(c1);
+//        customerService.add(c2);
+//        customerService.add(c3);
+//    }
 
     /**
      * Wires the necessary object dependencies
@@ -75,9 +74,19 @@ public class Bootstrap {
 
         // attach all input to standard i/o
         Prompt prompt = new Prompt(System.in, System.out);
+        ConnectionManager connectionManager = new ConnectionManager();
+        JdbcCustomerService jdbcCustomerService = new JdbcCustomerService();
+        jdbcCustomerService.setConnectionManager(connectionManager);
+
+        Customer c = jdbcCustomerService.get(1);
+        System.out.println("received customer: " + c);
+        System.out.println(c.getFirstName());
+
 
         // wire services
         authService.setCustomerService(customerService);
+
+
 
         // wire login controller and view
         LoginController loginController = new LoginController();
