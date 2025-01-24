@@ -3,98 +3,49 @@ package io.codeforall.bootcamp.javabank.services.jdbc;
 import io.codeforall.bootcamp.javabank.persistence.ConnectionManager;
 import io.codeforall.bootcamp.javabank.model.Customer;
 import io.codeforall.bootcamp.javabank.model.account.Account;
+import io.codeforall.bootcamp.javabank.persistence.TransactionManager;
+import io.codeforall.bootcamp.javabank.persistence.daos.CustomerDao;
+import io.codeforall.bootcamp.javabank.persistence.daos.jdbc.JDBCCustomerDao;
+import io.codeforall.bootcamp.javabank.persistence.jdbc.JDBCSessionManager;
 import io.codeforall.bootcamp.javabank.services.AccountService;
 import io.codeforall.bootcamp.javabank.services.CustomerService;
 
 import java.sql.*;
 import java.util.*;
 
+import static java.sql.DriverManager.getConnection;
+
 public class JdbcCustomerService implements CustomerService {
 
     private AccountService accountService;
-    private ConnectionManager connectionManager;
-
-    public JdbcCustomerService(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
-    }
+    private CustomerDao customerDao;
+    private TransactionManager transactionManager;
 
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
     }
 
+    public void setCustomerDao(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
+
+    public void setTransactionManager(TransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
+    }
+
     @Override
     public Customer get(Integer id) {
+         return customerDao.findById(id);
 
-        Customer customer = null;
 
-        try {
-            String query = "SELECT customer.id AS cid, first_name, last_name, phone, email, customer.version AS cVersion, account.id AS aid " +
-                    "FROM customer " +
-                    "LEFT JOIN account " +
-                    "ON customer.id = account.customer_id " +
-                    "WHERE customer.id = ?";
-
-            PreparedStatement statement = connectionManager.getConnection().prepareStatement(query);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-
-                if (customer == null) {
-                    customer = buildCustomer(resultSet);
-                }
-
-                int accountId = resultSet.getInt("aid");
-                Account account = accountService.get(accountId);
-
-                if (account == null) {
-                    break;
-                }
-
-                customer.addAccount(account);
-            }
-
-            statement.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return customer;
     }
 
     @Override
     public List<Customer> list() {
+        return customerDao.findAll();
 
-        Map<Integer, Customer> customers = new HashMap<>();
-
-        try {
-            String query = "SELECT customer.id AS cid, first_name, last_name, phone, email, customer.version as cVersion, account.id AS aid " +
-                    "FROM customer " +
-                    "LEFT JOIN account " +
-                    "ON customer.id = account.customer_id";
-
-            PreparedStatement statement = connectionManager.getConnection().prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                if (!customers.containsKey(resultSet.getInt("cid"))) {
-                    Customer customer = buildCustomer(resultSet);
-                    customers.put(customer.getId(), customer);
-                }
-
-                Account account = accountService.get(resultSet.getInt("aid"));
-                if (account != null) {
-                    customers.get(resultSet.getInt("cid")).addAccount(account);
-                }
-            }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return new LinkedList<>(customers.values());
     }
+
 
     @Override
     public Set<Integer> listCustomerAccountIds(Integer id) {
@@ -142,45 +93,9 @@ public class JdbcCustomerService implements CustomerService {
     @Override
     public void add(Customer customer) {
 
-        if (customer.getId() != null && get(customer.getId()) != null) {
-            return;
-        }
 
-        Connection connection = connectionManager.getConnection();
 
-        try {
-            connection.setAutoCommit(false);
 
-            String query = "INSERT INTO customer(first_name, last_name, email, phone) " +
-                    "VALUES(?, ?, ?, ?)";
-
-            PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-
-            statement.setString(1, customer.getFirstName());
-            statement.setString(2, customer.getLastName());
-            statement.setString(3, customer.getEmail());
-            statement.setString(4, customer.getPhone());
-
-            statement.executeUpdate();
-
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-
-            if (generatedKeys.next()) {
-                customer.setId(generatedKeys.getInt(1));
-            }
-
-            statement.close();
-
-            connection.commit();
-
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            e.printStackTrace();
-        }
     }
 
     private Customer buildCustomer(ResultSet resultSet) throws SQLException {
